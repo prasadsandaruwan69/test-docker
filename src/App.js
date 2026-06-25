@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="App">
       <div className="login-card">
-        <h1> setkuashia</h1>
+        <h1> gon thmal path</h1>
         <form onSubmit={handleSubmit} className="login-form">
           <label>
             nameuser
