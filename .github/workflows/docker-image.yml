@@ -9,36 +9,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Deploy via SSH
-      - name: Deploy to Server via SSH
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          port: 22
           debug: true
           script: |
-            echo "🚀 Connected to server successfully"
+            echo "🚀 Deploy started"
 
-            # go to project folder
             cd ~/app || exit 1
 
-            # update code
-            git pull origin master
+            git fetch --all
+            git reset --hard origin/master
 
-            # build docker image
-            docker build -t test-docker .
-
-            # stop old container (ignore error if not exists)
+            # STOP + REMOVE OLD CONTAINER
             docker stop test-docker || true
             docker rm test-docker || true
 
-            # run new container
+            # REMOVE OLD IMAGE (IMPORTANT)
+            docker rmi test-docker || true
+
+            # FORCE CLEAN BUILD (VERY IMPORTANT FIX)
+            docker build --no-cache -t test-docker .
+
+            # RUN NEW CONTAINER
             docker run -d -p 200:80 --name test-docker test-docker
 
-            echo "✅ Deployment completed successfully"
+            echo "✅ Deploy completed"
