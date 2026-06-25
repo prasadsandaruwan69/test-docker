@@ -17,7 +17,7 @@ function App() {
         <h1>Login1</h1>
         <form onSubmit={handleSubmit} className="login-form">
           <label>
-            name
+            nameuser
             <input
               type="text"
               value={username}
