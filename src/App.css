@@ -19,11 +19,7 @@
 }
 
 .game-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 18px;
+
 }
 
 .game-header h1 {
